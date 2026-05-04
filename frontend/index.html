@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECG Arrhythmia Detector — AI-Powered Cardiac Analysis</title>
+  <meta name="description" content="Advanced ECG arrhythmia detection powered by deep learning. Upload your ECG CSV data and get instant classification results for Normal, Supraventricular, Ventricular, Fusion, and Unknown beat types." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=12" />
+</head>
+<body>
+
+  <!-- ── Hero / Header ─────────────────────────────────────────────────── -->
+  <header class="hero" id="hero">
+    <div class="hero__bg-grid"></div>
+    <div class="hero__ecg-line" aria-hidden="true">
+      <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <polyline class="ecg-wave" points="
+          0,60 80,60 100,60 115,20 125,100 135,5 145,115 155,60 175,60
+          255,60 275,60 290,20 300,100 310,5 320,115 330,60 350,60
+          430,60 450,60 465,20 475,100 485,5 495,115 505,60 525,60
+          605,60 625,60 640,20 650,100 660,5 670,115 680,60 700,60
+          780,60 800,60 815,20 825,100 835,5 845,115 855,60 875,60
+          955,60 975,60 990,20 1000,100 1010,5 1020,115 1030,60 1200,60
+        " />
+      </svg>
+    </div>
+
+    <nav class="nav">
+      <div class="nav__brand">
+        <div class="nav__pulse" aria-hidden="true"></div>
+        <span class="nav__logo">ECG<span class="nav__logo-accent">Detect</span></span>
+      </div>
+      <div class="nav__links">
+        <a href="#upload-section" class="nav__link">Analyze</a>
+        <a href="#about-section" class="nav__link">About</a>
+        <span class="nav__badge">AI-Powered</span>
+      </div>
+    </nav>
+
+    <div class="hero__content">
+      <div class="hero__tag">Deep Learning · Cardiac Analysis · 86.12% Accuracy</div>
+      <h1 class="hero__title">
+        ECG Arrhythmia<br />
+        <span class="hero__title-accent">Detection</span>
+      </h1>
+      <p class="hero__subtitle">
+        Upload your ECG data and receive an instant AI-powered cardiac rhythm classification
+        using our trained 2D Convolutional Neural Network.
+      </p>
+      <div class="hero__actions">
+        <a href="#upload-section" class="btn btn--primary" id="start-btn">
+          <span class="btn__icon">⚡</span> Start Analysis
+        </a>
+        <button class="btn btn--ghost" id="demo-btn">
+          <span class="btn__icon">▶</span> Try Demo
+        </button>
+      </div>
+      <div class="hero__stats">
+        <div class="hero__stat">
+          <span class="hero__stat-value">5</span>
+          <span class="hero__stat-label">Beat Types</span>
+        </div>
+        <div class="hero__stat-divider"></div>
+        <div class="hero__stat">
+          <span class="hero__stat-value">186</span>
+          <span class="hero__stat-label">Features</span>
+        </div>
+        <div class="hero__stat-divider"></div>
+        <div class="hero__stat">
+          <span class="hero__stat-value">2D CNN</span>
+          <span class="hero__stat-label">Architecture</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Main App ───────────────────────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- Upload Section -->
+    <section class="section upload-section" id="upload-section">
+      <div class="section__header">
+        <div class="section__number">01</div>
+        <div>
+          <h2 class="section__title">Upload ECG Data</h2>
+          <p class="section__subtitle">Upload a CSV file containing ECG signal data (at least 186 feature columns)</p>
+        </div>
+      </div>
+
+      <div class="upload-grid">
+        <!-- Drop Zone -->
+        <div class="card upload-card" id="upload-card">
+          <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-label="Upload CSV file">
+            <div class="drop-zone__icon" aria-hidden="true">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="31" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4" />
+                <path d="M32 20v16M24 28l8-8 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22 44h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <p class="drop-zone__text">Drag &amp; drop your <strong>.csv</strong> file here</p>
+            <p class="drop-zone__sub">or click to browse</p>
+            <input type="file" id="csv-input" accept=".csv" class="drop-zone__input" aria-label="Select CSV file" />
+          </div>
+
+          <!-- File Info (shown after upload) -->
+          <div class="file-info" id="file-info" hidden>
+            <div class="file-info__icon" aria-hidden="true">📊</div>
+            <div class="file-info__details">
+              <span class="file-info__name" id="file-name"></span>
+              <span class="file-info__meta" id="file-meta"></span>
+            </div>
+            <button class="file-info__remove" id="remove-file" aria-label="Remove file">✕</button>
+          </div>
+        </div>
+
+        <!-- Row Selector & Controls -->
+        <div class="card controls-card">
+          <h3 class="controls-card__title">Analysis Settings</h3>
+
+          <div class="form-group">
+            <label class="form-label" for="row-input">Row Number <span class="form-hint">(0-indexed)</span></label>
+            <div class="input-wrapper">
+              <input
+                type="number"
+                id="row-input"
+                class="form-input"
+                placeholder="e.g. 0"
+                min="0"
+                value="0"
+                aria-describedby="row-hint"
+              />
+              <span class="input-icon" aria-hidden="true">#</span>
+            </div>
+            <span class="form-note" id="row-hint">Select which ECG sample row to analyze</span>
+            <span class="form-note" id="row-max" hidden></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Data Source</label>
+            <div class="source-tabs" role="tablist">
+              <button class="source-tab source-tab--active" id="tab-upload" role="tab" aria-selected="true" data-source="upload">
+                📁 Upload File
+              </button>
+              <button class="source-tab" id="tab-demo" role="tab" aria-selected="false" data-source="demo">
+                🧪 Sample Data
+              </button>
+            </div>
+          </div>
+
+          <button class="btn btn--primary btn--full" id="analyze-btn" disabled>
+            <span class="btn__icon" aria-hidden="true">🔬</span>
+            Analyze ECG
+          </button>
+
+          <div class="model-info">
+            <div class="model-info__dot" aria-hidden="true"></div>
+            <span>Model loaded · 2D CNN · 86.12% accuracy</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Loading State -->
+    <div class="loading-overlay" id="loading-overlay" hidden aria-live="polite">
+      <div class="loading-card">
+        <div class="loading-ecg" aria-hidden="true">
+          <svg viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg">
+            <polyline class="loading-wave" points="0,30 40,30 55,10 65,50 72,2 80,58 88,30 105,30 145,30 160,10 170,50 177,2 185,58 193,30 210,30 250,30 265,10 275,50 282,2 290,58 298,30 300,30" />
+          </svg>
+        </div>
+        <p class="loading-text" id="loading-text">Analyzing ECG signal...</p>
+        <div class="loading-steps" id="loading-steps">
+          <div class="loading-step loading-step--active" id="step-1">📡 Reading signal data</div>
+          <div class="loading-step" id="step-2">🧠 Running CNN inference</div>
+          <div class="loading-step" id="step-3">📈 Generating visualizations</div>
+          <div class="loading-step" id="step-4">✅ Preparing results</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <section class="section results-section" id="results-section" hidden>
+      <div class="section__header">
+        <div class="section__number">02</div>
+        <div>
+          <h2 class="section__title">Analysis Results</h2>
+          <p class="section__subtitle">AI classification of the selected ECG heartbeat sample</p>
+        </div>
+        <button class="btn btn--ghost btn--sm" id="reset-btn">↩ New Analysis</button>
+      </div>
+
+      <!-- Diagnosis Card -->
+      <div class="diagnosis-banner" id="diagnosis-banner">
+        <div class="diagnosis-banner__left">
+          <div class="diagnosis-badge" id="diagnosis-badge">
+            <span class="diagnosis-badge__icon" id="diagnosis-icon" aria-hidden="true"></span>
+            <span class="diagnosis-badge__label" id="diagnosis-risk"></span>
+          </div>
+          <div>
+            <div class="diagnosis-label">Detected Beat Type</div>
+            <div class="diagnosis-class" id="diagnosis-class"></div>
+          </div>
+        </div>
+        <div class="diagnosis-confidence">
+          <div class="confidence-ring" id="confidence-ring">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="42" class="confidence-ring__bg" />
+              <circle cx="50" cy="50" r="42" class="confidence-ring__fill" id="confidence-circle" stroke-dasharray="264" stroke-dashoffset="264" />
+            </svg>
+            <div class="confidence-ring__text">
+              <span class="confidence-ring__value" id="confidence-value">0%</span>
+              <span class="confidence-ring__label">Confidence</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alert Banner (only for arrhythmia) -->
+      <div class="alert-banner alert-banner--danger" id="arrhythmia-alert" hidden>
+        <span class="alert-banner__icon" aria-hidden="true">⚠️</span>
+        <div>
+          <strong>Arrhythmia Detected</strong>
+          <p id="arrhythmia-detail"></p>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="card description-card">
+        <h3 class="description-card__title">Clinical Description</h3>
+        <p class="description-card__text" id="description-text"></p>
+      </div>
+
+      <!-- Plots Grid -->
+      <div class="plots-grid">
+        <div class="card plot-card">
+          <div class="plot-card__header">
+            <h3 class="plot-card__title">ECG Signal Waveform</h3>
+            <span class="plot-card__tag">Time Series</span>
+          </div>
+          <div class="plot-card__body">
+            <img id="ecg-plot" class="plot-img" alt="ECG signal waveform plot" src="" />
+          </div>
+        </div>
+        <div class="card plot-card">
+          <div class="plot-card__header">
+            <h3 class="plot-card__title">Signal Distribution</h3>
+            <span class="plot-card__tag">2D Histogram</span>
+          </div>
+          <div class="plot-card__body">
+            <img id="histogram-plot" class="plot-img" alt="ECG signal 2D histogram" src="" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Confidence Scores -->
+      <div class="card confidence-card">
+        <h3 class="confidence-card__title">Confidence Scores — All Classes</h3>
+        <div class="confidence-bars" id="confidence-bars">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="disclaimer">
+        <span class="disclaimer__icon" aria-hidden="true">ℹ️</span>
+        <p>
+          <strong>Note:</strong> The accuracy of our Arrhythmia ECG scanner model is approximately <strong>86.12%</strong>.
+          While this is a strong indicator of the model's effectiveness, medical diagnoses may also rely on the judgment
+          of qualified healthcare professionals. This tool is intended to assist — not replace — clinical evaluation.
+        </p>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about-section" id="about-section">
+      <div class="section__header">
+        <div class="section__number">03</div>
+        <div>
+          <h2 class="section__title">Beat Classifications</h2>
+          <p class="section__subtitle">The five cardiac rhythm categories our model detects</p>
+        </div>
+      </div>
+
+      <div class="classes-grid">
+        <div class="class-card class-card--normal">
+          <div class="class-card__icon" aria-hidden="true">💚</div>
+          <h3 class="class-card__name">Normal</h3>
+          <p class="class-card__desc">Standard sinus rhythm originating from the SA node. Optimal and regular cardiac cycle.</p>
+          <span class="class-card__badge class-card__badge--low">Low Risk</span>
+        </div>
+        <div class="class-card class-card--supra">
+          <div class="class-card__icon" aria-hidden="true">🟡</div>
+          <h3 class="class-card__name">Supraventricular Ectopic</h3>
+          <p class="class-card__desc">Abnormal beats arising above the ventricles from atrial electrical disturbances.</p>
+          <span class="class-card__badge class-card__badge--high">High Risk</span>
+        </div>
+        <div class="class-card class-card--ventri">
+          <div class="class-card__icon" aria-hidden="true">🔴</div>
+          <h3 class="class-card__name">Ventricular Ectopic</h3>
+          <p class="class-card__desc">Premature beats originating in the ventricles — can lead to severe arrhythmias.</p>
+          <span class="class-card__badge class-card__badge--high">High Risk</span>
+        </div>
+        <div class="class-card class-card--fusion">
+          <div class="class-card__icon" aria-hidden="true">🟠</div>
+          <h3 class="class-card__name">Fusion Beats</h3>
+          <p class="class-card__desc">Two beat sources coincide producing a hybrid morphology on the ECG tracing.</p>
+          <span class="class-card__badge class-card__badge--medium">Medium Risk</span>
+        </div>
+        <div class="class-card class-card--unknown">
+          <div class="class-card__icon" aria-hidden="true">⚪</div>
+          <h3 class="class-card__name">Unknown Beats</h3>
+          <p class="class-card__desc">Unclassifiable rhythms that may require further specialized diagnostic testing.</p>
+          <span class="class-card__badge class-card__badge--medium">Medium Risk</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <span class="footer__brand">ECG<span>Detect</span></span>
+      <span class="footer__copy">ECG Arrhythmia Detection System · 2D CNN Model · For research & educational use only</span>
+    </div>
+  </footer>
+
+  <!-- ── Medical Advice Chatbot ─────────────────────────────────────────── -->
+  <button id="chatbot-fab" class="chatbot-fab" aria-label="Open Medical Chat" title="Consult Medical Chatbot">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+  </button>
+
+  <div id="chatbot-window" class="chatbot-window" hidden>
+    <div class="chatbot-header">
+      <div class="chatbot-header__title">
+        <span class="chatbot-header__icon">⚕️</span>
+        <h3>Cardiology Expert</h3>
+      </div>
+      <button id="chatbot-close" class="chatbot-close">&times;</button>
+    </div>
+    
+    <div id="chatbot-messages" class="chatbot-messages">
+      <!-- Chat bubbles injected via JS -->
+    </div>
+
+    <div class="chatbot-suggestions" id="chatbot-suggestions">
+      <button class="chip" data-topic="medicine">💊 Medicine</button>
+      <button class="chip" data-topic="exercise">🏃 Exercise</button>
+      <button class="chip" data-topic="diet">🥗 Diet Plan</button>
+      <button class="chip" data-topic="cure">✨ Can it be cured?</button>
+    </div>
+
+    <div class="chatbot-input">
+      <input type="text" id="chatbot-text" placeholder="Ask about treatments..." autocomplete="off">
+      <button id="chatbot-send" aria-label="Send">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script src="js/app.js?v=12"></script>
+  <script src="js/chatbot.js?v=12"></script>
+</body>
+</html>

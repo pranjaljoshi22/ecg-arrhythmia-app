@@ -1,0 +1,30 @@
+﻿C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\filelist.txt
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\.ipynb_checkpoints
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\best_model.h5
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\Computer-Normal-Anterior-Hyperacute-T-waves.png
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\convnet_fig.png
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\csvimg.png
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\datasets.csv
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\ECG Arrhythmia classification using 2D convolutional model.ipynb
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\ECG Arrhythmia Detection Using 2D CNN Model.docx
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\ECG Arrhythmia Detection Using 2D CNN Model.pdf
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\ECG Arrhythmia Detection Using 2D CNN Model_1.pdf
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\ECG Arrhythmia Report.docx
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\ECG Arrhythmia Report.pdf
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\ecg.csv
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\ecg_graph.png
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\ecg_image.png
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\ecg_image1.png
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\ecg_image2.jpg
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\ecg_signal.txt
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\get-pip.py
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\heaart.png
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\histogram.png
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\implement.py
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\Implementation.ipynb
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\Killer-ECG-Part-1-Infographic.png
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\mitbih_test.csv
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\sample.csv
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\sample_model.h5
+C:\Users\admin\OneDrive\Desktop\ECG FINAL\ECG FINAL\.ipynb_checkpoints\Implementation-checkpoint.ipynb
