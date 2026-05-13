@@ -1,0 +1,27 @@
+# Large data files (exceed GitHub's 100MB limit)
+ECG FINAL/mitbih_test.csv
+ECG FINAL/datasets.csv
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Upload directory (runtime generated)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

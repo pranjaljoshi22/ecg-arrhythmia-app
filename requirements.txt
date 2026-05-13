@@ -2,7 +2,6 @@ flask
 flask-cors
 numpy
 pandas
-tensorflow
-keras
 matplotlib
+h5py
 gunicorn
