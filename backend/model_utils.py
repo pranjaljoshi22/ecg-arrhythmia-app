@@ -46,11 +46,18 @@ def load_ecg_model(model_path):
 
 
 def get_csv_info(csv_path):
-    """Get metadata about a CSV file."""
-    df = pd.read_csv(csv_path, header=None)
+    """Get metadata about a CSV file without loading it fully into memory."""
+    # Count rows efficiently by iterating lines (avoids loading 100MB+ into RAM)
+    with open(csv_path, 'r') as f:
+        row_count = sum(1 for _ in f)
+
+    # Read only the first row to get column count
+    first_row = pd.read_csv(csv_path, header=None, nrows=1)
+    col_count = int(first_row.shape[1])
+
     return {
-        'rows': int(df.shape[0]),
-        'columns': int(df.shape[1]),
+        'rows': row_count,
+        'columns': col_count,
     }
 
 
